@@ -1,4 +1,4 @@
-module snipppet-box.mms.io
+module snippet-box.mms.io
 
 go 1.23.4
 
