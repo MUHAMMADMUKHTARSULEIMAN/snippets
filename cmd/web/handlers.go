@@ -1,12 +1,13 @@
 package main
 
 import (
-	// "errors"
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
-	// "snippet-box.mms.io/internals/models"
+
+	"snippet-box.mms.io/internal/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -59,16 +60,17 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Display a specific snippet with an id of %d\n", id)
-	// snippet, err := app.snippets.Get(id)
-	// if err != nil {
-	// 	if errors.Is(err, models.ErrNoRecord) {
-	// 		app.NotFound(w)
-	// 	} else {
-	// 		app.serverError(w, err)
-	// 	}
-	// 	return
-	// }
+	snippet, err := app.snippets.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%+v", snippet)
 
 	// files := []string{
 	// 	"./ui/html/base.tmpl",
@@ -82,7 +84,7 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	// 	return
 	// }
 
-	// err := ts.ExecuteTemplate(w, "base", snippet)
+	// err = ts.ExecuteTemplate(w, "base", snippet)
 	// if err != nil {
 	// 	app.serverError(w, err)
 	// 	return
