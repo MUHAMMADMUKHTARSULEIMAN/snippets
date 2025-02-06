@@ -1,7 +1,8 @@
-{{with .Snippet}}
-  {{define "title"}}Snippet #{{.ID}}{{end}}
 
-  {{define "main"}}
+{{define "title"}}Snippet #{{.Snippet.ID}}{{end}}
+
+{{define "main"}}
+  {{with .Snippet}}
     <div class='snippet'>
       <div class='metadata'>
         <strong>{{.Title}}</strong>
