@@ -39,7 +39,9 @@ func MaxChars(value string, n int) bool {
 
 func PermittedInt(value int, permittedValues ...int) bool {
 	for _, v := range permittedValues {
-		return value == v
+		if value == v {
+			return true
+		}
 	}
 	return false
 }
