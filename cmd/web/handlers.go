@@ -195,7 +195,6 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		} else {
 			app.serverError(w, err)
 		}
-		return
 	}
 
 	err = app.sessionManager.RenewToken(r.Context())
@@ -205,6 +204,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
+	app.sessionManager.Put(r.Context(), "flash", "You have been successfully logged in.")
 
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }

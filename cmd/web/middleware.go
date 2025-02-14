@@ -36,3 +36,17 @@ func (app *application) recoverPanic(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+func (app *application) requireAuthentication(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !app.isAuthenticated(r) {
+			app.sessionManager.Put(r.Context(), "flash", "Please create an account or log in to continue.")
+			http.Redirect(w, r, "/user/signup", http.StatusSeeOther)
+			return
+		}
+
+		w.Header().Add("Cache-Control", "no-store")
+
+		next.ServeHTTP(w, r)
+	})
+}
